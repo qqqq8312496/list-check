@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light"><title>对得上 · 名单核对与补全</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%232d6155'/%3E%3Cpath d='m10 20 7 7 14-15' fill='none' stroke='white' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="vendor/xlsx.full.min.js"></script><script defer src="core.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="./"><span class="brand-icon">✓</span><span>对得上<small>名单核对与补全</small></span></a><div class="top-actions"><span class="local-badge"><i></i> 本地处理 · 文件不上传</span><button class="text-btn" id="helpButton">使用说明 <span>↗</span></button></div></header>
+  <main>
+    <section class="intro"><div><div class="eyebrow">LESS CHECKING, MORE CLARITY</div><h1>两张表，核对得明明白白。</h1><p id="introText">找出缺少的名字、次数差异与重名，保留每一条数据的来处。</p></div><div class="intro-side"><span class="small-rule"></span>不需要公式<br>也不需要 AI</div></section>
+    <section class="workspace">
+      <div class="modebar"><div class="tabs" role="tablist" aria-label="工具"><button id="compareTab" role="tab" aria-selected="true" class="active" data-mode="compare"><span>01</span> 名单核对</button><button id="supplementTab" role="tab" aria-selected="false" data-mode="supplement"><span>02</span> 补充资料</button></div><button class="text-btn" id="demoButton">载入示例 <span>↗</span></button></div>
+      <div class="step-heading"><span class="step">1</span><h2>放入两张表</h2><span class="step-caption">支持 XLSX、旧版 XLS、CSV 和粘贴</span></div>
+      <div class="sources" id="sources"></div>
+      <section class="settings-section"><div class="step-heading"><span class="step">2</span><h2 id="setupTitle">确认核对方式</h2><span class="step-caption">表头和数据范围可在上方展开调整</span></div><div id="mapping"></div>
+        <div class="runbar"><details class="advanced"><summary>匹配规则 <span>前后空格自动忽略</span></summary><div class="advanced-body"><label><input id="ignoreSpaces" type="checkbox"> 忽略字段内的空格</label><label><input id="ignoreCase" type="checkbox"> 忽略英文字母大小写</label><p>保留前导零；不合并同音字、简繁体或 O / 0。空白单元格与数字 0 不相同。</p></div></details><button id="runButton" class="primary" disabled>开始核对 <span>→</span></button></div>
+      </section>
+    </section>
+    <section id="resultSection" class="result-section" aria-live="polite"><div class="result-placeholder"><span class="placeholder-icon">≍</span><h3>差异有迹可循，资料有据可补。</h3><p>导入两张表并选择对应列，结果会出现在这里。</p><button class="text-btn" id="emptyDemo">没有表格？用示例试一试 →</button></div></section>
+    <footer><span>对得上 <b>·</b> 让每一行都有着落</span><span>计算在当前浏览器完成 · 刷新后清空导入数据</span></footer>
+  </main>
+  <div id="toast" role="status" hidden></div>
+  <dialog id="pasteDialog"><form method="dialog"><div class="dialog-head"><h2>粘贴表格</h2><button class="icon-btn" aria-label="关闭">×</button></div><p class="muted">从 Excel 复制后粘贴，或每行输入一个名字。粘贴不保留合并信息，复杂表头请上传原文件。</p><textarea id="pasteText" placeholder="姓名&#9;部门&#10;张三&#9;工程部&#10;李四&#9;设备部"></textarea><label class="checkline"><input id="pasteHeader" type="checkbox" checked> 第一行是表头（纯名单请取消勾选）</label><div class="dialog-actions"><button class="secondary">取消</button><button id="pasteConfirm" type="button" class="primary">导入内容</button></div></form></dialog>
+  <dialog id="detailDialog"><div class="dialog-head"><h2 id="detailTitle">原始记录</h2><button class="icon-btn" id="closeDetail" aria-label="关闭">×</button></div><div id="detailContent"></div></dialog>
+  <dialog id="helpDialog"><div class="dialog-head"><h2>两种工具，一样简单</h2><button class="icon-btn" id="closeHelp" aria-label="关闭">×</button></div><div class="help-copy"><h3>01 名单核对</h3><p>选择两列，以内容及次数比较，默认只看差异。重名不会自动去重；可选工号等辅助列进一步区分。</p><h3>02 补充资料</h3><p>保留主表的行顺序与原有字段，只在右侧追加所选资料。重名不会自动填入，需补选辅助列或手动确认对应记录。</p><h3>复杂表头</h3><p>打开“表头与数据范围”，指定任意位置的单行或多行表头。Excel 合并范围用于生成完整字段名；不自动填充数据区合并单元格。</p><h3>文件与隐私</h3><p>支持 XLSX、XLS、CSV 和常见 HTML 表格形式的 XLS。加密文件请先解除密码。全部数据只在浏览器内处理，无统计脚本、无 API。网页依赖已放在本地，下载整个文件夹后也能离线打开。</p><h3>导出说明</h3><p>导出规整的 XLSX 新文件，不修改原文件。不复制原表的复杂排版、宏、图片或公式；公式读取已有结果，不重新计算。身份证号在源文件中如果已按数字保存并丢失精度，无法恢复。</p></div></dialog>
+</body></html>
